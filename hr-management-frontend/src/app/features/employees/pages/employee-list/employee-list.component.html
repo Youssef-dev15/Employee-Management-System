@@ -1,30 +1,30 @@
 <div class="page-header">
   <div>
-    <h1>Employés</h1>
-    <p class="muted">{{ filtered.length }} / {{ employees.length }} employé(s)</p>
+    <h1>Employees</h1>
+    <p class="muted">{{ filtered.length }} / {{ employees.length }} employee(s)</p>
   </div>
-  <a class="btn btn-primary" routerLink="new">+ Nouvel employé</a>
+  <a class="btn btn-primary" routerLink="new">+ New employee</a>
 </div>
 
 <div class="card" style="margin-bottom: 1rem">
-  <input type="search" placeholder="Filtrer par nom, email, département, ville…" [value]="search" (input)="onSearch($event)" />
+  <input type="search" placeholder="Filter by name, email, department, city…" [value]="search" (input)="onSearch($event)" />
 </div>
 
 <div class="card card--flush">
   @if (loading) {
     <app-spinner></app-spinner>
   } @else if (filtered.length === 0) {
-    <div class="empty">Aucun employé à afficher.</div>
+    <div class="empty">No employees to display.</div>
   } @else {
     <div class="table-wrap">
       <table class="table">
         <thead>
           <tr>
-            <th>Nom</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Genre</th>
-            <th>Département</th>
-            <th>Ville</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>City</th>
             <th class="actions">Actions</th>
           </tr>
         </thead>
@@ -41,8 +41,8 @@
               <td>{{ employee.departementName || '—' }}</td>
               <td>{{ employee.city || '—' }}</td>
               <td class="actions">
-                <a class="btn btn-ghost btn-sm" [routerLink]="[employee.employeeID, 'edit']">Modifier</a>
-                <button type="button" class="btn-link-danger" (click)="askDelete(employee)">Supprimer</button>
+                <a class="btn btn-ghost btn-sm" [routerLink]="[employee.employeeID, 'edit']">Edit</a>
+                <button type="button" class="btn-link-danger" (click)="askDelete(employee)">Delete</button>
               </td>
             </tr>
           }
@@ -55,8 +55,8 @@
 <app-confirm-dialog
   [open]="!!toDelete"
   [busy]="deleting"
-  title="Supprimer l'employé"
-  [message]="'Supprimer « ' + (toDelete?.name ?? '') + ' » ? Son adresse sera également supprimée.'"
+  title="Delete employee"
+  [message]="'Delete « ' + (toDelete?.name ?? '') + ' »? Their address will also be deleted.'"
   (confirmed)="confirmDelete()"
   (cancelled)="cancelDelete()"
 ></app-confirm-dialog>

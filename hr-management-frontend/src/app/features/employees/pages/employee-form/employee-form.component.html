@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>{{ isEdit ? "Modifier l'employé" : 'Nouvel employé' }}</h1>
+  <h1>{{ isEdit ? "Edit employee" : 'New employee' }}</h1>
 </div>
 
 <div class="card form-narrow">
@@ -9,11 +9,11 @@
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="form-grid">
         <div class="form-group">
-          <label for="name">Nom complet</label>
+          <label for="name">Full name</label>
           <input id="name" type="text" formControlName="name" [class.invalid]="form.controls.name.touched && form.controls.name.invalid" />
           @if (form.controls.name.touched && form.controls.name.errors; as errors) {
-            @if (errors['required']) { <span class="field-error">Le nom est obligatoire.</span> }
-            @if (errors['minlength']) { <span class="field-error">Au moins 2 caractères.</span> }
+            @if (errors['required']) { <span class="field-error">The name is required.</span> }
+            @if (errors['minlength']) { <span class="field-error">At least 2 characters.</span> }
           }
         </div>
 
@@ -21,13 +21,13 @@
           <label for="email">Email</label>
           <input id="email" type="email" formControlName="email" [class.invalid]="form.controls.email.touched && form.controls.email.invalid" />
           @if (form.controls.email.touched && form.controls.email.errors; as errors) {
-            @if (errors['required']) { <span class="field-error">L'email est obligatoire.</span> }
-            @if (errors['email']) { <span class="field-error">Format d'email invalide.</span> }
+            @if (errors['required']) { <span class="field-error">The email is required.</span> }
+            @if (errors['email']) { <span class="field-error">Invalid email format.</span> }
           }
         </div>
 
         <div class="form-group">
-          <label for="gender">Genre</label>
+          <label for="gender">Gender</label>
           <select id="gender" formControlName="gender">
             @for (g of genders; track g.value) {
               <option [ngValue]="g.value">{{ g.label }}</option>
@@ -36,9 +36,9 @@
         </div>
 
         <div class="form-group">
-          <label for="departementId">Département</label>
+          <label for="departementId">Department</label>
           <select id="departementId" formControlName="departementId">
-            <option [ngValue]="null">— Aucun —</option>
+            <option [ngValue]="null">— None —</option>
             @for (d of departments; track d.departementId) {
               <option [ngValue]="d.departementId">{{ d.departementName }}</option>
             }
@@ -47,42 +47,42 @@
       </div>
 
       <div class="form-section">
-        <h2>Adresse <span class="muted">(facultative)</span></h2>
+        <h2>Address <span class="muted">(optional)</span></h2>
         @if (isEdit) {
           <div class="hint">
-            {{ currentCity ? 'Ville actuelle : ' + currentCity + '. ' : '' }}
-            Laissez les champs vides pour ne pas modifier l'adresse, ou saisissez-la en entier pour la remplacer.
+            {{ currentCity ? 'Current city: ' + currentCity + '. ' : '' }}
+            Leave the fields empty to keep the address unchanged, or enter the full address to replace it.
           </div>
         }
 
         <div formGroupName="adresse" class="form-grid">
           <div class="form-group form-group--full">
-            <label for="street">Rue</label>
+            <label for="street">Street</label>
             <input id="street" type="text" formControlName="street" placeholder="Avenue Habib Bourguiba" />
           </div>
           <div class="form-group">
-            <label for="city">Ville</label>
+            <label for="city">City</label>
             <input id="city" type="text" formControlName="city" />
           </div>
           <div class="form-group">
-            <label for="postalCode">Code postal</label>
+            <label for="postalCode">Postal code</label>
             <input id="postalCode" type="number" formControlName="postalCode" />
           </div>
           <div class="form-group">
-            <label for="country">Pays</label>
+            <label for="country">Country</label>
             <input id="country" type="text" formControlName="country" />
           </div>
         </div>
 
         @if (form.controls.adresse.hasError('incomplete') && form.controls.adresse.dirty) {
-          <p class="field-error">Renseignez tous les champs de l'adresse (rue, ville, code postal, pays) ou aucun.</p>
+          <p class="field-error">Fill in all address fields (street, city, postal code, country) or none.</p>
         }
       </div>
 
       <div class="form-actions">
-        <a class="btn btn-ghost" routerLink="/employees">Annuler</a>
+        <a class="btn btn-ghost" routerLink="/employees">Cancel</a>
         <button type="submit" class="btn btn-primary" [disabled]="saving">
-          {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+          {{ saving ? 'Saving…' : 'Save' }}
         </button>
       </div>
     </form>

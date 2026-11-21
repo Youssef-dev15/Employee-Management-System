@@ -1,24 +1,24 @@
 <div class="page-header">
   <div>
-    <h1>Rapport des employés</h1>
-    <p class="muted">Statistiques et liste filtrée, paginée côté serveur.</p>
+    <h1>Employee report</h1>
+    <p class="muted">Statistics and filtered list, paginated on the server side.</p>
   </div>
 </div>
 
 @if (report) {
   <div class="stats">
     <div class="card stat-total">
-      <span class="muted">Total des employés</span>
+      <span class="muted">Total employees</span>
       <span class="stat-total__value">{{ report.totalEmployees }}</span>
     </div>
 
     <div class="card">
-      <h2>Répartition par département</h2>
+      <h2>Breakdown by department</h2>
       @if (report.employeesByDepartment.length === 0) {
-        <p class="muted">Aucune donnée.</p>
+        <p class="muted">No data.</p>
       }
       @for (stat of report.employeesByDepartment; track stat.departmentName) {
-        <button type="button" class="bar-row" title="Filtrer sur ce département" (click)="filterByDepartment(stat)">
+        <button type="button" class="bar-row" title="Filter on this department" (click)="filterByDepartment(stat)">
           <span>{{ stat.departmentName }}</span>
           <span class="bar"><span [style.width.%]="barWidth(stat)"></span></span>
           <span class="count">{{ stat.employeeCount }}</span>
@@ -30,14 +30,14 @@
 
 <form class="card filters" [formGroup]="filterForm" (submit)="$event.preventDefault()">
   <div class="form-group">
-    <label for="keyword">Recherche (nom ou email)</label>
-    <input id="keyword" type="search" formControlName="keyword" placeholder="Rechercher…" />
+    <label for="keyword">Search (name or email)</label>
+    <input id="keyword" type="search" formControlName="keyword" placeholder="Search…" />
   </div>
 
   <div class="form-group">
-    <label for="departementId">Département</label>
+    <label for="departementId">Department</label>
     <select id="departementId" formControlName="departementId">
-      <option [ngValue]="null">Tous</option>
+      <option [ngValue]="null">All</option>
       @for (d of departments; track d.departementId) {
         <option [ngValue]="d.departementId">{{ d.departementName }}</option>
       }
@@ -45,38 +45,38 @@
   </div>
 
   <div class="form-group">
-    <label for="gender">Genre</label>
+    <label for="gender">Gender</label>
     <select id="gender" formControlName="gender">
-      <option [ngValue]="null">Tous</option>
+      <option [ngValue]="null">All</option>
       @for (g of genders; track g.value) {
         <option [ngValue]="g.value">{{ g.label }}</option>
       }
     </select>
   </div>
 
-  <button type="button" class="btn btn-ghost" [disabled]="!hasActiveFilters" (click)="resetFilters()">Réinitialiser</button>
+  <button type="button" class="btn btn-ghost" [disabled]="!hasActiveFilters" (click)="resetFilters()">Reset</button>
 </form>
 
 <div class="card card--flush" style="margin-top: 1rem">
   @if (loading && !report) {
     <app-spinner></app-spinner>
   } @else if (failed && !report) {
-    <div class="empty">Impossible de charger le rapport.</div>
+    <div class="empty">Unable to load the report.</div>
   } @else if (report) {
     @if (report.filteredEmployees.empty) {
-      <div class="empty">Aucun employé ne correspond à ces filtres.</div>
+      <div class="empty">No employees match these filters.</div>
     } @else {
       <div class="table-wrap" [style.opacity]="loading ? 0.55 : 1">
         <table class="table">
           <thead>
             <tr>
-              <th class="sortable" (click)="toggleSort()" title="Changer l'ordre de tri">
-                Nom {{ sortDirection === 'asc' ? '▲' : '▼' }}
+              <th class="sortable" (click)="toggleSort()" title="Change the sort order">
+                Name {{ sortDirection === 'asc' ? '▲' : '▼' }}
               </th>
               <th>Email</th>
-              <th>Genre</th>
-              <th>Département</th>
-              <th>Ville</th>
+              <th>Gender</th>
+              <th>Department</th>
+              <th>City</th>
             </tr>
           </thead>
           <tbody>
