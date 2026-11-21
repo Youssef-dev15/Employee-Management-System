@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>{{ isEdit ? 'Modifier le département' : 'Nouveau département' }}</h1>
+</div>
+
+<div class="card form-narrow">
+  @if (loading) {
+    <app-spinner></app-spinner>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-group">
+        <label for="departementName">Nom du département</label>
+        <input
+          id="departementName"
+          type="text"
+          formControlName="departementName"
+          placeholder="ex : Finance"
+          [class.invalid]="form.controls.departementName.touched && form.controls.departementName.invalid"
+        />
+        @if (form.controls.departementName.touched && form.controls.departementName.errors; as errors) {
+          @if (errors['required']) { <span class="field-error">Le nom est obligatoire.</span> }
+          @if (errors['minlength']) { <span class="field-error">Au moins 2 caractères.</span> }
+          @if (errors['maxlength']) { <span class="field-error">100 caractères maximum.</span> }
+        }
+      </div>
+
+      <div class="form-actions">
+        <a class="btn btn-ghost" routerLink="/departments">Annuler</a>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

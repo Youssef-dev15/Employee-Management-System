@@ -1,0 +1,90 @@
+<div class="page-header">
+  <h1>{{ isEdit ? "Modifier l'employé" : 'Nouvel employé' }}</h1>
+</div>
+
+<div class="card form-narrow">
+  @if (loading) {
+    <app-spinner></app-spinner>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nom complet</label>
+          <input id="name" type="text" formControlName="name" [class.invalid]="form.controls.name.touched && form.controls.name.invalid" />
+          @if (form.controls.name.touched && form.controls.name.errors; as errors) {
+            @if (errors['required']) { <span class="field-error">Le nom est obligatoire.</span> }
+            @if (errors['minlength']) { <span class="field-error">Au moins 2 caractères.</span> }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" [class.invalid]="form.controls.email.touched && form.controls.email.invalid" />
+          @if (form.controls.email.touched && form.controls.email.errors; as errors) {
+            @if (errors['required']) { <span class="field-error">L'email est obligatoire.</span> }
+            @if (errors['email']) { <span class="field-error">Format d'email invalide.</span> }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Genre</label>
+          <select id="gender" formControlName="gender">
+            @for (g of genders; track g.value) {
+              <option [ngValue]="g.value">{{ g.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="departementId">Département</label>
+          <select id="departementId" formControlName="departementId">
+            <option [ngValue]="null">— Aucun —</option>
+            @for (d of departments; track d.departementId) {
+              <option [ngValue]="d.departementId">{{ d.departementName }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Adresse <span class="muted">(facultative)</span></h2>
+        @if (isEdit) {
+          <div class="hint">
+            {{ currentCity ? 'Ville actuelle : ' + currentCity + '. ' : '' }}
+            Laissez les champs vides pour ne pas modifier l'adresse, ou saisissez-la en entier pour la remplacer.
+          </div>
+        }
+
+        <div formGroupName="adresse" class="form-grid">
+          <div class="form-group form-group--full">
+            <label for="street">Rue</label>
+            <input id="street" type="text" formControlName="street" placeholder="Avenue Habib Bourguiba" />
+          </div>
+          <div class="form-group">
+            <label for="city">Ville</label>
+            <input id="city" type="text" formControlName="city" />
+          </div>
+          <div class="form-group">
+            <label for="postalCode">Code postal</label>
+            <input id="postalCode" type="number" formControlName="postalCode" />
+          </div>
+          <div class="form-group">
+            <label for="country">Pays</label>
+            <input id="country" type="text" formControlName="country" />
+          </div>
+        </div>
+
+        @if (form.controls.adresse.hasError('incomplete') && form.controls.adresse.dirty) {
+          <p class="field-error">Renseignez tous les champs de l'adresse (rue, ville, code postal, pays) ou aucun.</p>
+        }
+      </div>
+
+      <div class="form-actions">
+        <a class="btn btn-ghost" routerLink="/employees">Annuler</a>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

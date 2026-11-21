@@ -1,0 +1,14 @@
+@if (open) {
+  <div class="modal-backdrop" (click)="cancelled.emit()">
+    <div class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h2>{{ title }}</h2>
+      <p>{{ message }}</p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn-ghost" [disabled]="busy" (click)="cancelled.emit()">Annuler</button>
+        <button type="button" class="btn btn-danger" [disabled]="busy" (click)="confirmed.emit()">
+          {{ busy ? 'En cours…' : confirmLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

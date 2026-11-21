@@ -1,0 +1,20 @@
+<div class="pagination">
+  <span class="muted">{{ from }}–{{ to }} sur {{ totalElements }}</span>
+
+  <div class="pagination__controls">
+    <label class="pagination__size">
+      Par page
+      <select [value]="size" (change)="onSizeChange($event)">
+        @for (option of sizeOptions; track option) {
+          <option [value]="option" [selected]="option === size">{{ option }}</option>
+        }
+      </select>
+    </label>
+
+    <button type="button" class="btn btn-ghost btn-sm" [disabled]="isFirst" (click)="go(0)" aria-label="Première page">«</button>
+    <button type="button" class="btn btn-ghost btn-sm" [disabled]="isFirst" (click)="go(page - 1)" aria-label="Page précédente">‹</button>
+    <span class="pagination__current">Page {{ totalPages === 0 ? 0 : page + 1 }} / {{ totalPages }}</span>
+    <button type="button" class="btn btn-ghost btn-sm" [disabled]="isLast" (click)="go(page + 1)" aria-label="Page suivante">›</button>
+    <button type="button" class="btn btn-ghost btn-sm" [disabled]="isLast" (click)="go(totalPages - 1)" aria-label="Dernière page">»</button>
+  </div>
+</div>

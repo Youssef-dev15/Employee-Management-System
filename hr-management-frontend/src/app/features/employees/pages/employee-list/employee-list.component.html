@@ -1,0 +1,62 @@
+<div class="page-header">
+  <div>
+    <h1>Employés</h1>
+    <p class="muted">{{ filtered.length }} / {{ employees.length }} employé(s)</p>
+  </div>
+  <a class="btn btn-primary" routerLink="new">+ Nouvel employé</a>
+</div>
+
+<div class="card" style="margin-bottom: 1rem">
+  <input type="search" placeholder="Filtrer par nom, email, département, ville…" [value]="search" (input)="onSearch($event)" />
+</div>
+
+<div class="card card--flush">
+  @if (loading) {
+    <app-spinner></app-spinner>
+  } @else if (filtered.length === 0) {
+    <div class="empty">Aucun employé à afficher.</div>
+  } @else {
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Genre</th>
+            <th>Département</th>
+            <th>Ville</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (employee of filtered; track employee.employeeID) {
+            <tr>
+              <td>{{ employee.name }}</td>
+              <td>{{ employee.email }}</td>
+              <td>
+                <span class="badge" [class.badge--male]="employee.gender === 'MALE'" [class.badge--female]="employee.gender === 'FEMALE'">
+                  {{ employee.gender | genderLabel }}
+                </span>
+              </td>
+              <td>{{ employee.departementName || '—' }}</td>
+              <td>{{ employee.city || '—' }}</td>
+              <td class="actions">
+                <a class="btn btn-ghost btn-sm" [routerLink]="[employee.employeeID, 'edit']">Modifier</a>
+                <button type="button" class="btn-link-danger" (click)="askDelete(employee)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="!!toDelete"
+  [busy]="deleting"
+  title="Supprimer l'employé"
+  [message]="'Supprimer « ' + (toDelete?.name ?? '') + ' » ? Son adresse sera également supprimée.'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()"
+></app-confirm-dialog>

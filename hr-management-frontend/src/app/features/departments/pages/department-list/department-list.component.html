@@ -1,0 +1,46 @@
+<div class="page-header">
+  <div>
+    <h1>Départements</h1>
+    <p class="muted">{{ departments.length }} département(s)</p>
+  </div>
+  <a class="btn btn-primary" routerLink="new">+ Nouveau département</a>
+</div>
+
+<div class="card card--flush">
+  @if (loading) {
+    <app-spinner></app-spinner>
+  } @else if (departments.length === 0) {
+    <div class="empty">Aucun département pour le moment.</div>
+  } @else {
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (department of departments; track department.departementId) {
+            <tr>
+              <td>{{ department.departementName }}</td>
+              <td class="actions">
+                <a class="btn btn-ghost btn-sm" [routerLink]="[department.departementId, 'edit']">Modifier</a>
+                <button type="button" class="btn-link-danger" (click)="askDelete(department)">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="!!toDelete"
+  [busy]="deleting"
+  title="Supprimer le département"
+  [message]="'Voulez-vous vraiment supprimer « ' + (toDelete?.departementName ?? '') + ' » ?'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()"
+></app-confirm-dialog>

@@ -1,0 +1,37 @@
+# --- Maven / Build ---
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# --- Eclipse / VS Code (au cas où) ---
+.classpath
+.project
+.settings/
+.vscode/
+
+# --- Fichiers Java compilés & Logs ---
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+
+# --- Variables d'environnement & Secrets ---
+.env
+*.local
+application-local.properties
+application-prod.properties
+
+# --- Système d'exploitation (Windows / macOS) ---
+Thumbs.db
+Desktop.ini
+.DS_Store
